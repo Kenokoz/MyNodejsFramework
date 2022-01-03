@@ -5,7 +5,7 @@ const PORT = process.env.PORT || 5000;
 
 const emitter = EventEmitter();
 
-class Routes {
+class Router {
   constructor() {
     this.endpoints = {};
   }
@@ -27,7 +27,25 @@ class Routes {
       handler(req, res);
     });
   }
+
+  get(path, handler) {
+    this.request('GET', path, handler);
+  }
+
+  post(path, handler) {
+    this.request('POST', path, handler);
+  }
+
+  put(path, handler) {
+    this.request('PUT', path, handler);
+  }
+
+  delete(path, handler) {
+    this.request('DELETE', path, handler);
+  }
 }
+
+const router = new Router();
 
 const server = http.createServer((req, res) => {
   res.writeHead(200, {
