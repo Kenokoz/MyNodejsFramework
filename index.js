@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 
 const PORT = process.env.PORT || 5000;
 
-const emitter = EventEmitter();
+const emitter = new EventEmitter();
 
 class Router {
   constructor() {
@@ -11,7 +11,7 @@ class Router {
   }
 
   request(method = 'GET', path, handler) {
-    if (this.endpoints[path]) {
+    if (!this.endpoints[path]) {
       this.endpoints[path] = {};
     }
 
@@ -47,20 +47,16 @@ class Router {
 
 const router = new Router();
 
+router.get('/users', (req, res) => {
+  res.end('Hello users');
+});
+
+router.get('/posts', (req, res) => {
+  res.end('Hello posts');
+});
+
 const server = http.createServer((req, res) => {
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-
-  if (req.url === '/users') {
-    return res.end(JSON.stringify([{ id: 1, name: 'Kenokoz' }]));
-  }
-
-  if (req.url === '/posts') {
-    return res.end('POSTS');
-  }
-
-  res.end('<h1>Hello</h1>');
+  emitter.emit(`[${req.url}]:[${req.method}]`, req, res);
 });
 
 server.listen(PORT, () => {
