@@ -1,0 +1,17 @@
+{
+  "name": "baseCourse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "test.js",
+  "scripts": {
+    "start": "cross-env MESSAGE=5000 nodemon ./process.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0"
+  }
+}
