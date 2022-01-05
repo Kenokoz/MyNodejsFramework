@@ -8,14 +8,16 @@ const users = [
 ];
 
 router.get('/users', (req, res) => {
+  if (req.params.id) {
+    return res.send(users.find(({ id }) => req.params.id == id));
+  }
   res.send(users);
 });
 
 router.post('/users', (req, res) => {
   const user = req.body;
-  console.log('user', user);
   users.push(user);
-  res.send(users);
+  res.send(user);
 });
 
 module.exports = router;
