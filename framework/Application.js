@@ -29,6 +29,7 @@ class Application {
         this.emitter.on(this._getRouteMask(path, method), (req, res) => {
           const handler = endpoint[method];
           this.middlewares.forEach((middleware) => middleware(req, res));
+          console.log('req.body', req.body);
           handler(req, res);
         });
       });
@@ -37,10 +38,21 @@ class Application {
 
   _createServer() {
     return http.createServer((req, res) => {
-      const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res);
-      if (!emitted) {
-        res.end();
-      }
+      let body = '';
+      req.on('data', (chunk) => {
+        body += chunk;
+      });
+
+      req.on('end', () => {
+        if (body) {
+          req.body = JSON.parse(body);
+        }
+
+        const emitted = this.emitter.emit(this._getRouteMask(req.url, req.method), req, res);
+        if (!emitted) {
+          res.end();
+        }
+      });
     });
   }
 

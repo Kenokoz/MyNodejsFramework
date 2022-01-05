@@ -12,6 +12,9 @@ router.get('/users', (req, res) => {
 });
 
 router.post('/users', (req, res) => {
+  const user = req.body;
+  console.log('user', user);
+  users.push(user);
   res.send(users);
 });
 
